@@ -1,29 +1,30 @@
 import { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import { site } from '../config/site.js';
 
 const links = [
-  ['Services', '#services'],
-  ['How it works', '#process'],
-  ['Work', '#work'],
-  ['Packages', '#packages'],
-  ['About', '#about'],
+  ['Services', '/services'],
+  ['Portfolio', '/portfolio'],
+  ['About', '/about'],
+  ['Contact', '/contact'],
 ];
+
+const linkClass = ({ isActive }) =>
+  `text-sm font-medium hover:text-brand-blue ${isActive ? 'text-brand-blue' : 'text-slate-600'}`;
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
-        <a href="#top" aria-label={`${site.name} home`} className="flex items-center">
+        <Link to="/" aria-label={`${site.name} home`} className="flex items-center">
           <img src="/logo.png" alt={site.legalName} className="h-11 w-auto" />
-        </a>
+        </Link>
         <nav className="hidden items-center gap-7 md:flex" aria-label="Main">
-          {links.map(([label, href]) => (
-            <a key={href} href={href} className="text-sm font-medium text-slate-600 hover:text-brand-blue">
-              {label}
-            </a>
+          {links.map(([label, to]) => (
+            <NavLink key={to} to={to} className={linkClass}>{label}</NavLink>
           ))}
-          <a href="#contact" className="btn-red">Get a free quote</a>
+          <Link to="/contact" className="btn-red">Get a free quote</Link>
         </nav>
         <button
           className="rounded-md p-2 md:hidden"
@@ -39,15 +40,15 @@ export default function Navbar() {
       {open && (
         <nav className="border-t border-slate-200 bg-white px-5 py-4 md:hidden" aria-label="Mobile">
           <ul className="flex flex-col gap-1">
-            {links.map(([label, href]) => (
-              <li key={href}>
-                <a href={href} onClick={() => setOpen(false)} className="block rounded-md px-2 py-3 font-medium hover:bg-brand-mist">
+            {links.map(([label, to]) => (
+              <li key={to}>
+                <NavLink to={to} onClick={() => setOpen(false)} className="block rounded-md px-2 py-3 font-medium hover:bg-brand-mist">
                   {label}
-                </a>
+                </NavLink>
               </li>
             ))}
             <li className="pt-2">
-              <a href="#contact" onClick={() => setOpen(false)} className="btn-red w-full">Get a free quote</a>
+              <Link to="/contact" onClick={() => setOpen(false)} className="btn-red w-full">Get a free quote</Link>
             </li>
           </ul>
         </nav>
